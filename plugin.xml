@@ -1,0 +1,28 @@
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+xmlns:android="http://schemas.android.com/apk/res/android"
+           id="cordova-plugin-locationservices"
+      version="0.0.1">
+
+    <name>v</name>
+    <description>Useful method for an android cordova app</description>
+    <license>MIT</license>
+    <keywords>cordova</keywords>
+    <repo>https://github.com/chemerisuk/cordova-core-android-extensions</repo>
+    <issue>https://github.com/chemerisuk/cordova-core-android-extensions/issues</issue>
+
+    <!-- android -->
+    <platform name="android">
+        <js-module src="www/android/coreextensions.js" name="CoreCordovaExtensions">
+            <clobbers target="navigator.app" />
+        </js-module>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="CoreCordovaExtensions">
+                <param name="android-package" value="by.chemerisuk.cordova.coreextensions.CoreCordovaExtensions"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/CoreCordovaExtensions.java" target-dir="src/by/chemerisuk/cordova/coreextensions" />
+
+    </platform>
+</plugin>
