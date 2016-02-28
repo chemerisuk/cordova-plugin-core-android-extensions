@@ -79,7 +79,7 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         });
     }
 
-    private clearWindowFlags() {
+    private void clearWindowFlags() {
         cordova.getActivity().getWindow().clearFlags(
             LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
     }
