@@ -1,14 +1,14 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 xmlns:android="http://schemas.android.com/apk/res/android"
-           id="cordova-core-android-extensions"
+           id="cordova-plugin-core-android-extensions"
       version="0.0.1">
 
     <name>v</name>
     <description>Useful method for an android cordova app</description>
     <license>MIT</license>
     <keywords>cordova</keywords>
-    <repo>https://github.com/chemerisuk/cordova-core-android-extensions</repo>
-    <issue>https://github.com/chemerisuk/cordova-core-android-extensions/issues</issue>
+    <repo>https://github.com/chemerisuk/cordova-plugin-core-android-extensions</repo>
+    <issue>https://github.com/chemerisuk/cordova-plugin-core-android-extensions/issues</issue>
 
     <!-- android -->
     <platform name="android">
