@@ -26,19 +26,14 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         PluginResult.Status status = PluginResult.Status.OK;
         String result = "";
 
-        try {
-            if (action.equals("minimizeApp")) {
-                this.minimizeApp();
-            } else if (action.equals("resumeApp")) {
-                this.resumeApp();
-            }
-
-            callbackContext.sendPluginResult(new PluginResult(status, result));
-            return true;
-        } catch (JSONException e) {
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
-            return false;
+        if (action.equals("minimizeApp")) {
+            this.minimizeApp();
+        } else if (action.equals("resumeApp")) {
+            this.resumeApp();
         }
+
+        callbackContext.sendPluginResult(new PluginResult(status, result));
+        return true;
     }
 
     private void minimizeApp() {
