@@ -3,7 +3,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
            id="cordova-plugin-core-android-extensions"
       version="0.0.1">
 
-    <name>v</name>
+    <name>CoreAndroidExtensions</name>
     <description>Useful method for an android cordova app</description>
     <license>MIT</license>
     <keywords>cordova</keywords>
