@@ -1,5 +1,5 @@
 var exec = require("cordova/exec");
-var APP_PLUGIN_NAME = "CoreCordovaExtensions";
+var APP_PLUGIN_NAME = "CoreAndroidExtensions";
 
 module.exports = {
     /**

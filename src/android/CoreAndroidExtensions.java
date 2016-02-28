@@ -11,8 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 
 
-public class CoreCordovaExtensions extends CordovaPlugin {
-    public static final String PLUGIN_NAME = "CoreCordovaExtensions";
+public class CoreAndroidExtensions extends CordovaPlugin {
+    public static final String PLUGIN_NAME = "CoreAndroidExtensions";
 
     /**
      * Executes the request and returns PluginResult.
