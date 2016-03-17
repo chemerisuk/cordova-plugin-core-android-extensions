@@ -21,3 +21,7 @@ Shows home screen and sends the app into background
 ### navigator.app.resumeApp
 
 Activates app from background
+
+#### Parameters
+
+- `force`: When `true` the app bypasses keyguard and turns lights on.
