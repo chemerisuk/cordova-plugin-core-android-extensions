@@ -24,18 +24,14 @@ public class CoreAndroidExtensions extends CordovaPlugin {
      * @return                  A PluginResult object with a status and message.
      */
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        PluginResult.Status status = PluginResult.Status.OK;
-        String result = "";
-
-        final boolean force = args.optBoolean(0, false);
-
         if (action.equals("minimizeApp")) {
             this.minimizeApp();
         } else if (action.equals("resumeApp")) {
-            this.resumeApp(force);
+            this.resumeApp(args.optBoolean(0, false));
         }
 
-        callbackContext.sendPluginResult(new PluginResult(status, result));
+        callbackContext.success();
+
         return true;
     }
 
@@ -82,6 +78,36 @@ public class CoreAndroidExtensions extends CordovaPlugin {
     private void clearWindowFlags() {
         cordova.getActivity().getWindow().clearFlags(
             LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
+    }
+
+    private void startActivity(JSONObject options) {
+        String packageName = options.optString("package", "");
+        int flags = options.optInt("flags", 0);
+        JSONObject extras = options.optJSONObject("extras");
+
+        Context ctx = cordova.getActivity().getApplicationContext();
+        Intent intent;
+
+        if (packageName.isEmpty()) {
+            intent = new Intent(ctx, cordova.getActivity().getClass());
+        } else {
+            intent = new Intent();
+            intent.setPackage(packageName);
+        }
+
+        intent.setAction(options.optString("action", Intent.ACTION_MAIN));
+
+        if (flags > 0) {
+            intent.setFlags(flags);
+        }
+
+        if (extras != null) {
+            for (String key : extras.keys()) {
+                intent.putExtra(key, extras.get(key));
+            }
+        }
+
+        ctx.startActivity(intent);
     }
 
 }

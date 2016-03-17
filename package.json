@@ -1,0 +1,28 @@
+{
+  "name": "cordova-plugin-core-android-extensions",
+  "version": "1.0.0",
+  "description": "Useful methods for an android cordova app",
+  "cordova": {
+    "id": "cordova-plugin-core-android-extensions",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemerisuk/cordova-plugin-core-android-extensions"
+  },
+  "author": "Maksim Chemerisuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chemerisuk/cordova-plugin-core-android-extensions/issues"
+  },
+  "homepage": "https://github.com/chemerisuk/cordova-plugin-core-android-extensions#readme",
+  "keywords": [
+    "cordova",
+    "google-play-services",
+    "geolocation",
+    "ecosystem:cordova",
+    "cordova-android"
+  ]
+}
