@@ -24,4 +24,4 @@ Activates app from background
 
 #### Parameters
 
-- `force`: When `true` the app bypasses keyguard and turns lights on.
+- __force__: When `true` the app bypasses keyguard and turns lights on (Boolean)
