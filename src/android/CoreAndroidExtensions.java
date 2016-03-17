@@ -80,34 +80,4 @@ public class CoreAndroidExtensions extends CordovaPlugin {
             LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
-    private void startActivity(JSONObject options) {
-        String packageName = options.optString("package", "");
-        int flags = options.optInt("flags", 0);
-        JSONObject extras = options.optJSONObject("extras");
-
-        Context ctx = cordova.getActivity().getApplicationContext();
-        Intent intent;
-
-        if (packageName.isEmpty()) {
-            intent = new Intent(ctx, cordova.getActivity().getClass());
-        } else {
-            intent = new Intent();
-            intent.setPackage(packageName);
-        }
-
-        intent.setAction(options.optString("action", Intent.ACTION_MAIN));
-
-        if (flags > 0) {
-            intent.setFlags(flags);
-        }
-
-        if (extras != null) {
-            for (String key : extras.keys()) {
-                intent.putExtra(key, extras.get(key));
-            }
-        }
-
-        ctx.startActivity(intent);
-    }
-
 }
