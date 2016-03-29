@@ -25,7 +25,7 @@ public class CoreAndroidExtensions extends CordovaPlugin {
      */
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("minimizeApp")) {
-            this.minimizeApp();
+            this.minimizeApp(args.optBoolean(0, false));
         } else if (action.equals("resumeApp")) {
             this.resumeApp(args.optBoolean(0, false));
         }
@@ -46,10 +46,18 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         clearWindowFlags();
     }
 
-    private void minimizeApp() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        cordova.getActivity().startActivity(intent);
+    private void minimizeApp(boolean moveBack) {
+        // try to send it back and back to previous app
+        if (moveBack) {
+            moveBack = cordova.getActivity().moveTaskToBack(true);
+        }
+
+        // if not possible jump to home
+        if (!moveBack) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            cordova.getActivity().startActivity(intent);
+        }
     }
 
     private void resumeApp(boolean force) {

@@ -18,6 +18,10 @@ Useful methods for an android cordova app
 
 Shows home screen and sends the app into background
 
+#### Parameters
+
+- __moveBack__: When `true` the app first tried to return to the previous task in current stack (Boolean)
+
 ### navigator.app.resumeApp
 
 Activates app from background
