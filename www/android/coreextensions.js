@@ -5,8 +5,8 @@ module.exports = {
     /**
     * Go to home screen
     */
-    minimizeApp: function() {
-        return exec(null, null, APP_PLUGIN_NAME, "minimizeApp", []);
+    minimizeApp: function(moveBack) {
+        return exec(null, null, APP_PLUGIN_NAME, "minimizeApp", [moveBack]);
     },
 
     /**
@@ -15,4 +15,4 @@ module.exports = {
     resumeApp: function(force) {
         return exec(null, null, APP_PLUGIN_NAME, "resumeApp", [force]);
     }
-}
+};
