@@ -1,5 +1,5 @@
 # cordova-plugin-core-android-extensions
-Useful methods for an android cordova app
+> Useful methods for an android cordova app
 
 ## Installation
 
@@ -13,6 +13,8 @@ Useful methods for an android cordova app
 
 - `navigator.app.minimizeApp`
 - `navigator.app.resumeApp`
+- `navigator.app.detectApp`
+- `navigator.app.uninstallApp`
 
 ### navigator.app.minimizeApp
 
@@ -29,3 +31,20 @@ Activates app from background
 #### Parameters
 
 - __force__: When `true` the app bypasses keyguard and turns lights on (Boolean)
+
+### navigator.app.detectApp
+
+Detect app availability
+
+#### Parameters
+
+- __packageName__: Target app package name
+
+### navigator.app.uninstallApp
+
+Trigger app uninstall dialog
+
+#### Parameters
+
+- __packageName__: Target app package name
+

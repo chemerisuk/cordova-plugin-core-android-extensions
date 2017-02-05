@@ -14,5 +14,19 @@ module.exports = {
     */
     resumeApp: function(force) {
         return exec(null, null, APP_PLUGIN_NAME, "resumeApp", [force]);
+    },
+
+    /**
+     * Detect app availability
+     */
+    detectApp: function(packageName) {
+        return exec(null, null, APP_PLUGIN_NAME, "detectApp", [packageName]);
+    },
+
+    /**
+     * Trigger app uninstall dialog
+     */
+    uninstallApp: function(packageName) {
+        return exec(null, null, APP_PLUGIN_NAME, "uninstallApp", [packageName]);
     }
 };
