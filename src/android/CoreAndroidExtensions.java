@@ -7,9 +7,12 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.WindowManager.LayoutParams;
+import android.net.Uri;
 
 
 public class CoreAndroidExtensions extends CordovaPlugin {
