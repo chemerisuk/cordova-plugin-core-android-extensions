@@ -14,6 +14,9 @@ import android.view.WindowManager.LayoutParams;
 
 public class CoreAndroidExtensions extends CordovaPlugin {
     public static final String PLUGIN_NAME = "CoreAndroidExtensions";
+    public static final int UNINSTALL_REQUEST_CODE = 5523345;
+
+    private CallbackContext uninstallCallbackContext;
 
     /**
      * Executes the request and returns PluginResult.
@@ -26,11 +29,17 @@ public class CoreAndroidExtensions extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("minimizeApp")) {
             this.minimizeApp(args.optBoolean(0, false));
+
+            callbackContext.success();
         } else if (action.equals("resumeApp")) {
             this.resumeApp(args.optBoolean(0, false));
-        }
 
-        callbackContext.success();
+            callbackContext.success();
+        } else if (action.equals("uninstallApp")) {
+            this.uninstallApp(args.getString(0), callbackContext);
+        } else if (action.equals("detectApp")) {
+            this.detectApp(args.getString(0), callbackContext);
+        }
 
         return true;
     }
@@ -74,6 +83,27 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         }
     }
 
+    private void uninstallApp(String packageName, CallbackContext callbackContext) {
+        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+        this.cordova.startActivityForResult(this, intent, UNINSTALL_REQUEST_CODE);
+        this.uninstallCallbackContext = callbackContext;
+    }
+
+    private void detectApp(String packageName, CallbackContext callbackContext) {
+        Context ctx = this.cordova.getActivity().getApplicationContext();
+        PackageManager pm = ctx.getPackageManager();
+
+        try {
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+
+            callbackContext.success(1);
+        } catch(PackageManager.NameNotFoundException e) {
+            callbackContext.success(0);
+        }
+    }
+
     private void setupWindowFlags() {
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -88,4 +118,15 @@ public class CoreAndroidExtensions extends CordovaPlugin {
             LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == UNINSTALL_REQUEST_CODE) {
+            if (uninstallCallbackContext != null) {
+                if (resultCode == Activity.RESULT_OK) {
+                    uninstallCallbackContext.success();
+                } else {
+                    uninstallCallbackContext.error(resultCode);
+                }
+            }
+        }
+    }
 }
