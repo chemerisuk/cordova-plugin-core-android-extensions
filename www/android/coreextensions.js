@@ -19,14 +19,14 @@ module.exports = {
     /**
      * Detect app availability
      */
-    detectApp: function(packageName) {
-        return exec(null, null, APP_PLUGIN_NAME, "detectApp", [packageName]);
+    detectApp: function(packageName, successCallback, errorCallback) {
+        return exec(successCallback, errorCallback, APP_PLUGIN_NAME, "detectApp", [packageName]);
     },
 
     /**
      * Trigger app uninstall dialog
      */
-    uninstallApp: function(packageName) {
-        return exec(null, null, APP_PLUGIN_NAME, "uninstallApp", [packageName]);
+    uninstallApp: function(packageName, successCallback, errorCallback) {
+        return exec(successCallback, errorCallback, APP_PLUGIN_NAME, "uninstallApp", [packageName]);
     }
 };

@@ -101,9 +101,9 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
 
-            callbackContext.success(1);
+            callbackContext.success();
         } catch(PackageManager.NameNotFoundException e) {
-            callbackContext.success(0);
+            callbackContext.error(e.getMessage());
         }
     }
 
