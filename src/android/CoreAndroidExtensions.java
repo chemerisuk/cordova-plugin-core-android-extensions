@@ -88,9 +88,9 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
 
-            callbackContext.success();
+            callbackContext.success(1);
         } catch(PackageManager.NameNotFoundException e) {
-            callbackContext.error(e.getMessage());
+            callbackContext.success(0);
         }
     }
 
@@ -98,9 +98,9 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         if (requestCode == UNINSTALL_REQUEST_CODE) {
             if (uninstallCallbackContext != null) {
                 if (resultCode == Activity.RESULT_OK) {
-                    uninstallCallbackContext.success();
+                    uninstallCallbackContext.success(1);
                 } else {
-                    uninstallCallbackContext.error(resultCode);
+                    uninstallCallbackContext.success(0);
                 }
             }
         }
