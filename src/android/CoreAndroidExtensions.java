@@ -31,31 +31,20 @@ public class CoreAndroidExtensions extends CordovaPlugin {
      */
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("minimizeApp")) {
-            this.minimizeApp(args.optBoolean(0, false));
+            minimizeApp(args.optBoolean(0, false));
 
             callbackContext.success();
         } else if (action.equals("resumeApp")) {
-            this.resumeApp(args.optBoolean(0, false));
+            resumeApp();
 
             callbackContext.success();
         } else if (action.equals("uninstallApp")) {
-            this.uninstallApp(args.getString(0), callbackContext);
+            uninstallApp(args.getString(0), callbackContext);
         } else if (action.equals("detectApp")) {
-            this.detectApp(args.getString(0), callbackContext);
+            detectApp(args.getString(0), callbackContext);
         }
 
         return true;
-    }
-
-    /**
-     * Called when the system is about to start resuming a previous activity.
-     *
-     * @param multitasking
-     *      Flag indicating if multitasking is turned on for app
-     */
-    @Override
-    public void onPause(boolean multitasking) {
-        clearWindowFlags();
     }
 
     private void minimizeApp(boolean moveBack) {
@@ -63,7 +52,6 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         if (moveBack) {
             moveBack = cordova.getActivity().moveTaskToBack(true);
         }
-
         // if not possible jump to home
         if (!moveBack) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -72,18 +60,17 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         }
     }
 
-    private void resumeApp(boolean force) {
+    private void resumeApp() {
         Context ctx = cordova.getActivity().getApplicationContext();
-        Intent intent = new Intent(ctx, cordova.getActivity().getClass());
 
+        minimizeApp(false); // make sure app is minimized
+
+        Intent intent = new Intent(ctx, cordova.getActivity().getClass());
         intent.setAction(Intent.ACTION_MAIN);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_FROM_BACKGROUND | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         ctx.startActivity(intent);
-
-        if (force) {
-            setupWindowFlags();
-        }
     }
 
     private void uninstallApp(String packageName, CallbackContext callbackContext) {
@@ -105,20 +92,6 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         } catch(PackageManager.NameNotFoundException e) {
             callbackContext.error(e.getMessage());
         }
-    }
-
-    private void setupWindowFlags() {
-        cordova.getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                cordova.getActivity().getWindow().addFlags(
-                    LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
-            }
-        });
-    }
-
-    private void clearWindowFlags() {
-        cordova.getActivity().getWindow().clearFlags(
-            LayoutParams.FLAG_SHOW_WHEN_LOCKED | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_TURN_SCREEN_ON);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

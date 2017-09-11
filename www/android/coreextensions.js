@@ -12,8 +12,8 @@ module.exports = {
     /**
     * Return app to foreground
     */
-    resumeApp: function(force) {
-        return exec(null, null, APP_PLUGIN_NAME, "resumeApp", [force]);
+    resumeApp: function() {
+        return exec(null, null, APP_PLUGIN_NAME, "resumeApp", []);
     },
 
     /**

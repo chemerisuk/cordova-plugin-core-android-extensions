@@ -17,7 +17,6 @@
 - `navigator.app.uninstallApp`
 
 ### navigator.app.minimizeApp
-
 Shows home screen and sends the app into background
 
 #### Parameters
@@ -25,24 +24,17 @@ Shows home screen and sends the app into background
 - __moveBack__: When `true` the app first tried to return to the previous task in current stack (Boolean)
 
 ### navigator.app.resumeApp
-
-Activates app from background
-
-#### Parameters
-
-- __force__: When `true` the app bypasses keyguard and turns lights on (Boolean)
+Brings app into foreground.
 
 ### navigator.app.detectApp
-
-Detect app availability
+Detects an app availability.
 
 #### Parameters
 
 - __packageName__: Target app package name
 
 ### navigator.app.uninstallApp
-
-Trigger app uninstall dialog
+Trigger an app uninstall dialog.
 
 #### Parameters
 
