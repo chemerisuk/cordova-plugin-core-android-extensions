@@ -10,6 +10,7 @@
 - Android
 
 ## Methods
+Every method returns a promise fulfilled with an appropriate result.
 
 - `navigator.app.minimizeApp`
 - `navigator.app.resumeApp`
