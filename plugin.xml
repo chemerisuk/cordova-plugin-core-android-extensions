@@ -21,12 +21,14 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 <param name="android-package" value="by.chemerisuk.cordova.coreextensions.CoreAndroidExtensions"/>
             </feature>
         </config-file>
-               
+
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
         </config-file>
 
         <source-file src="src/android/CoreAndroidExtensions.java" target-dir="src/by/chemerisuk/cordova/coreextensions" />
+
+        <dependency id="cordova-support-android-plugin" version="~1.0.0"/>
 
     </platform>
 </plugin>

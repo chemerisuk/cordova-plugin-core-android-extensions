@@ -6,7 +6,7 @@ module.exports = {
     * Go to home screen
     */
     minimizeApp: function(moveBack) {
-        return exec(null, null, APP_PLUGIN_NAME, "minimizeApp", [moveBack]);
+        return exec(null, null, APP_PLUGIN_NAME, "minimizeApp", [moveBack || false]);
     },
 
     /**

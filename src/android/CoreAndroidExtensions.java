@@ -1,12 +1,5 @@
 package by.chemerisuk.cordova.coreextensions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,40 +7,25 @@ import android.content.pm.PackageManager;
 import android.view.WindowManager.LayoutParams;
 import android.net.Uri;
 
+import by.chemerisuk.cordova.support.CordovaMethod;
+import by.chemerisuk.cordova.support.ReflectiveCordovaPlugin;
 
-public class CoreAndroidExtensions extends CordovaPlugin {
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+
+
+public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
     public static final String PLUGIN_NAME = "CoreAndroidExtensions";
     public static final int UNINSTALL_REQUEST_CODE = 5523345;
 
     private CallbackContext uninstallCallbackContext;
 
-    /**
-     * Executes the request and returns PluginResult.
-     *
-     * @param action            The action to execute.
-     * @param args              JSONArry of arguments for the plugin.
-     * @param callbackContext   The callback context from which we were invoked.
-     * @return                  A PluginResult object with a status and message.
-     */
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("minimizeApp")) {
-            minimizeApp(args.optBoolean(0, false));
-
-            callbackContext.success();
-        } else if (action.equals("resumeApp")) {
-            resumeApp();
-
-            callbackContext.success();
-        } else if (action.equals("uninstallApp")) {
-            uninstallApp(args.getString(0), callbackContext);
-        } else if (action.equals("detectApp")) {
-            detectApp(args.getString(0), callbackContext);
-        }
-
-        return true;
-    }
-
-    private void minimizeApp(boolean moveBack) {
+    @CordovaMethod
+    protected void minimizeApp(boolean moveBack, CallbackContext callbackContext) {
         // try to send it back and back to previous app
         if (moveBack) {
             moveBack = cordova.getActivity().moveTaskToBack(true);
@@ -58,12 +36,17 @@ public class CoreAndroidExtensions extends CordovaPlugin {
             intent.addCategory(Intent.CATEGORY_HOME);
             cordova.getActivity().startActivity(intent);
         }
+
+        if (callbackContext != null) {
+            callbackContext.success();
+        }
     }
 
-    private void resumeApp() {
+    @CordovaMethod
+    protected void resumeApp(CallbackContext callbackContext) {
         Context ctx = cordova.getActivity().getApplicationContext();
 
-        minimizeApp(false); // make sure app is minimized
+        minimizeApp(false, null); // make sure app is minimized
 
         Intent intent = new Intent(ctx, cordova.getActivity().getClass());
         intent.setAction(Intent.ACTION_MAIN);
@@ -71,9 +54,12 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         ctx.startActivity(intent);
+
+        callbackContext.success();
     }
 
-    private void uninstallApp(String packageName, CallbackContext callbackContext) {
+    @CordovaMethod
+    protected void uninstallApp(String packageName, CallbackContext callbackContext) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + packageName));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
@@ -82,6 +68,7 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         this.uninstallCallbackContext = callbackContext;
     }
 
+    @CordovaMethod
     private void detectApp(String packageName, CallbackContext callbackContext) {
         Context ctx = cordova.getActivity().getApplicationContext();
         PackageManager pm = ctx.getPackageManager();
@@ -102,8 +89,7 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         if (requestCode == UNINSTALL_REQUEST_CODE) {
             if (uninstallCallbackContext != null) {
                 uninstallCallbackContext.sendPluginResult(
-                    new PluginResult(PluginResult.Status.OK,
-                        resultCode == Activity.RESULT_OK));
+                    new PluginResult(PluginResult.Status.OK, resultCode == Activity.RESULT_OK));
             }
         }
     }
