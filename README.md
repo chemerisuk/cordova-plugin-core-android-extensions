@@ -40,3 +40,11 @@ Trigger an app uninstall dialog.
 
 - __packageName__: Target app package name
 
+### navigator.app.startApp
+Starts an app activity.
+
+#### Parameters
+
+- __packageName__: Target app package name
+- __componentName__: Target app component name
+

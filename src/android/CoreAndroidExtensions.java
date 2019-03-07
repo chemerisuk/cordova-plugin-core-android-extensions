@@ -1,6 +1,7 @@
 package by.chemerisuk.cordova.coreextensions;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,7 +23,13 @@ public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
     public static final String PLUGIN_NAME = "CoreAndroidExtensions";
     public static final int UNINSTALL_REQUEST_CODE = 5523345;
 
+    private Context appContext;
     private CallbackContext uninstallCallbackContext;
+
+    @Override
+    protected void pluginInitialize() {
+        appContext = cordova.getActivity().getApplicationContext();
+    }
 
     @CordovaMethod
     protected void minimizeApp(boolean moveBack, CallbackContext callbackContext) {
@@ -44,16 +51,14 @@ public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
 
     @CordovaMethod
     protected void resumeApp(CallbackContext callbackContext) {
-        Context ctx = cordova.getActivity().getApplicationContext();
-
         minimizeApp(false, null); // make sure app is minimized
 
-        Intent intent = new Intent(ctx, cordova.getActivity().getClass());
+        Intent intent = new Intent(appContext, cordova.getActivity().getClass());
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-        ctx.startActivity(intent);
+        appContext.startActivity(intent);
 
         callbackContext.success();
     }
@@ -69,9 +74,8 @@ public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
     }
 
     @CordovaMethod
-    private void detectApp(String packageName, CallbackContext callbackContext) {
-        Context ctx = cordova.getActivity().getApplicationContext();
-        PackageManager pm = ctx.getPackageManager();
+    protected void detectApp(String packageName, CallbackContext callbackContext) {
+        PackageManager pm = appContext.getPackageManager();
         boolean resultValue = false;
 
         try {
@@ -83,6 +87,15 @@ public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
 
         callbackContext.sendPluginResult(
             new PluginResult(PluginResult.Status.OK, resultValue));
+    }
+
+    @CordovaMethod
+    protected void startApp(String packageName, String componentName, CallbackContext callbackContext) throws Exception {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(packageName, componentName));
+        appContext.startActivity(intent);
+
+        callbackContext.success();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
