@@ -12,6 +12,10 @@
     "type": "git",
     "url": "https://github.com/chemerisuk/cordova-plugin-core-android-extensions"
   },
+  "scripts": {
+    "postversion": "git push && git push --tags",
+    "version": "replace -s 'version=\"(.+)(?=\">)' 'version=\"'$npm_package_version plugin.xml && git add plugin.xml"
+  },
   "author": "Maksim Chemerisuk",
   "license": "MIT",
   "bugs": {
