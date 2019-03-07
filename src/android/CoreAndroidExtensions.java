@@ -78,22 +78,21 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         intent.setData(Uri.parse("package:" + packageName));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         cordova.startActivityForResult(this, intent, UNINSTALL_REQUEST_CODE);
+
         this.uninstallCallbackContext = callbackContext;
     }
 
     private void detectApp(String packageName, CallbackContext callbackContext) {
         Context ctx = cordova.getActivity().getApplicationContext();
         PackageManager pm = ctx.getPackageManager();
-        boolean resultValue;
+        boolean resultValue = false;
 
         try {
             // verify app is installed
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             // verify app is enabled
             resultValue = pm.getApplicationInfo(packageName, 0).enabled;
-        } catch(PackageManager.NameNotFoundException e) {
-            resultValue = false;
-        }
+        } catch(PackageManager.NameNotFoundException e) {}
 
         callbackContext.sendPluginResult(
             new PluginResult(PluginResult.Status.OK, resultValue));
@@ -102,11 +101,9 @@ public class CoreAndroidExtensions extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == UNINSTALL_REQUEST_CODE) {
             if (uninstallCallbackContext != null) {
-                if (resultCode == Activity.RESULT_OK) {
-                    uninstallCallbackContext.success(1);
-                } else {
-                    uninstallCallbackContext.success(0);
-                }
+                uninstallCallbackContext.sendPluginResult(
+                    new PluginResult(PluginResult.Status.OK,
+                        resultCode == Activity.RESULT_OK));
             }
         }
     }
