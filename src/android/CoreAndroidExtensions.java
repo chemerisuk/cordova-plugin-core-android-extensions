@@ -91,8 +91,13 @@ public class CoreAndroidExtensions extends ReflectiveCordovaPlugin {
 
     @CordovaMethod
     protected void startApp(String packageName, String componentName, CallbackContext callbackContext) throws Exception {
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName(packageName, componentName));
+        Intent intent;
+        if (componentName == null) {
+            intent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+        } else {
+            intent = new Intent().setComponent(new ComponentName(packageName, componentName));
+        }
+
         appContext.startActivity(intent);
 
         callbackContext.success();

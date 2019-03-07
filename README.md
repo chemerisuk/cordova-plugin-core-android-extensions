@@ -46,5 +46,13 @@ Starts an app activity.
 #### Parameters
 
 - __packageName__: Target app package name
-- __componentName__: Target app component name
+- __componentName__: Target app component name (optional)
+
+Examples:
+```js
+// open Google Maps
+navigator.app.startApp("com.google.android.apps.maps")
+// open device Wi-Fi settings
+navigator.app.startApp("com.android.settings", "com.android.settings.wifi.WifiSettings")
+```
 
