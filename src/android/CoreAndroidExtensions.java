@@ -77,21 +77,26 @@ public class CoreAndroidExtensions extends CordovaPlugin {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + packageName));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-        this.cordova.startActivityForResult(this, intent, UNINSTALL_REQUEST_CODE);
+        cordova.startActivityForResult(this, intent, UNINSTALL_REQUEST_CODE);
         this.uninstallCallbackContext = callbackContext;
     }
 
     private void detectApp(String packageName, CallbackContext callbackContext) {
-        Context ctx = this.cordova.getActivity().getApplicationContext();
+        Context ctx = cordova.getActivity().getApplicationContext();
         PackageManager pm = ctx.getPackageManager();
+        boolean resultValue;
 
         try {
+            // verify app is installed
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-
-            callbackContext.success(1);
+            // verify app is enabled
+            resultValue = pm.getApplicationInfo(packageName, 0).enabled;
         } catch(PackageManager.NameNotFoundException e) {
-            callbackContext.success(0);
+            resultValue = false;
         }
+
+        callbackContext.sendPluginResult(
+            new PluginResult(PluginResult.Status.OK, resultValue));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
