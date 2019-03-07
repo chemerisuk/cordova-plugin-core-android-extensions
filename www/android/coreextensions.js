@@ -28,7 +28,7 @@ module.exports = {
      */
     uninstallApp: function(packageName, successCallback, errorCallback) {
         return exec(successCallback, errorCallback, APP_PLUGIN_NAME, "uninstallApp", [packageName]);
-    }
+    },
 
     /**
      * Starts app intent
